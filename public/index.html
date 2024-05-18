@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fadi's Fitness Programs</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/old-english-five" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Social Media Links -->
+    <a href="https://www.instagram.com/Fadilift" class="social-follow instagram-follow" target="_blank" aria-label="Follow me on Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.youtube.com/@Fadilift" class="social-follow youtube-follow" target="_blank" aria-label="Subscribe to my YouTube channel">
+        <i class="fab fa-youtube"></i>
+    </a>
+    <a href="https://www.tiktok.com/@Fadilifts" class="social-follow tiktok-follow" target="_blank" aria-label="Follow me on TikTok">
+        <i class="fab fa-tiktok"></i>
+    </a>
+    <!-- More Social Media Links -->
+
+    <div class="hero" id="home">
+        <div class="fadi-text">Fadi</div>
+    </div>
+    <div class="program-section">
+        <h2 class="program-pricing-heading">Programs</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="program-pricing-heading">Bulking Program</h3>
+                <p class="price">$20</p>
+                <button class="add-to-cart-btn" data-price="2000">Buy Now</button>
+                <ul>
+                    <li><strong>Goal:</strong> Pack on muscle mass while minimizing fat gain.</li>
+                    <li><strong>Duration:</strong> 12 weeks.</li>
+                    <li><strong>Diet:</strong> Detailed information on the type of macros and meals you will be consuming. Designed to maximize muscle gain.</li>
+                    <li><strong>Cardio:</strong> Detailed instructions on which type of cardio you will do for maximum results during the bulking process.</li>
+                    <li><strong>What you will be getting from this program:</strong> Increase muscle mass and strength.</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h3 class="program-pricing-heading">Cutting Program</h3>
+                <p class="price">$25</p>
+                <button class="add-to-cart-btn" data-price="2500">Buy Now</button>
+                <ul>
+                    <li><strong>Goal:</strong> Shed fat while preserving muscle mass.</li>
+                    <li><strong>Duration:</strong> 12 weeks.</li>
+                    <li><strong>Diet:</strong> Detailed information on the type of macros and meals you will be consuming. Designed to maximize fat loss and preserve muscle mass.</li>
+                    <li><strong>Cardio:</strong> Detailed instructions on which type of cardio you will do for maximum results during the cutting process.</li>
+                    <li><strong>What you will be getting from this program:</strong> Achieve a leaner, more defined physique, feeling dryer and more confident.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Stripe Elements for Payment -->
+    <div id="checkoutCart" class="side-cart">
+        <button class="close-btn" onclick="toggleCart(false)">&gt;</button>
+        <h2>Cart Details</h2>
+        <form id="payment-form">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+            <input type="email" id="email" name="email" placeholder="Email Address" required>
+            <div id="card-element">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+            <div class="totals">
+                <div id="subtotal">Subtotal: $0</div>
+                <div id="tax">Tax (10%): $0</div>
+                <div id="total">Total: $0</div>
+            </div>
+            <button type="submit" id="submit">Submit Payment</button>
+        </form>
+    </div>
+
+    <script>
+    var stripe = Stripe('your-public-key'); // Replace with your public key
+    var elements = stripe.elements();
+    var style = {
+        base: {
+            fontSize: '16px',
+            color: '#32325d',
+        },
+    };
+    var card = elements.create('card', {style: style});
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createPaymentMethod({
+            type: 'card',
+            card: card,
+            billing_details: {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value
+            },
+        }).then(function(result) {
+            if (result.error) {
+                // Display error.message in your UI.
+                console.log(result.error.message);
+            } else {
+                // Send the PaymentMethod id to your server (and anything else
+                // you might need, like the billing details)
+                fetch('/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ paymentMethodId: result.paymentMethod.id, amount: document.querySelector('.add-to-cart-btn').dataset.price })
+                }).then(function(result) {
+                    result.json().then(function(json) {
+                        stripe.confirmCardPayment(json.clientSecret).then(function(result) {
+                            if (result.error) {
+                                // The payment failed -- display error.message to your customer
+                                console.log(result.error.message);
+                            } else {
+                                // The payment succeeded!
+                                console.log("Payment successful!");
+                            }
+                        });
+                    });
+                });
+            }
+        });
+    });
+
+    // Function to handle adding items to cart and showing the cart
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            var price = parseInt(this.dataset.price, 10); // Get price from data attribute
+            resetCart(); // Reset cart totals before adding new item
+            updateCart(price); // Update cart with new item's price
+            toggleCart(true); // Open the cart
+        });
+    });
+
+    function toggleCart(open) {
+        var cart = document.getElementById('checkoutCart');
+        cart.style.right = open ? '0px' : '-100%';
+    }
+    
+    function updateCart(price) {
+        var subtotalElement = document.getElementById('subtotal');
+        var taxElement = document.getElementById('tax');
+        var totalElement = document.getElementById('total');
+
+        var newSubtotal = price / 100; // Since price is in cents
+        var tax = newSubtotal * 0.10; // 10% tax
+        var total = newSubtotal + tax;
+
+        subtotalElement.innerText = `Subtotal: $${newSubtotal.toFixed(2)}`;
+        taxElement.innerText = `Tax (10%): $${tax.toFixed(2)}`;
+        totalElement.innerText = `Total: $${total.toFixed(2)}`;
+    }
+
+    function resetCart() {
+        // Reset the subtotal, tax, and total to zero
+        document.getElementById('subtotal').innerText = 'Subtotal: $0';
+        document.getElementById('tax').innerText = 'Tax (10%): $0';
+        document.getElementById('total').innerText = 'Total: $0';
+    }
+
+    // Swipe functionality
+    var startX;
+
+    document.getElementById('checkoutCart').addEventListener('touchstart', function(event) {
+        startX = event.touches[0].clientX;
+    });
+
+    document.getElementById('checkoutCart').addEventListener('touchmove', function(event) {
+        var touch = event.touches[0];
+        var change = touch.clientX - startX;
+        if (change > 50) { // Swipe right threshold
+            toggleCart(false);
+        }
+    });
+
+    </script>
+</body>
+</html>

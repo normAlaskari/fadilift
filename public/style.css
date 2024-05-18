@@ -1,0 +1,337 @@
+/* Base styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('h1_hero.png');
+    height: 100vh;
+    background-size: cover;
+    background-position: top;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container and general text centering */
+.container, .text-center {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Program section styling */
+.program-section {
+    padding: 10px;
+}
+
+.program-stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Allows stats to wrap on smaller screens */
+}
+
+.stat {
+    width: 25%; /* Define a minimum width to avoid too much shrink on desktop */
+    text-align: center;
+}
+
+.stat h2 {
+    font-size: 3em;
+}
+
+.stat p {
+    font-size: 1.2em;
+}
+
+/* Program Pricing Heading */
+.program-pricing-heading {
+    font-family: 'Old English Five', sans-serif;
+    font-size: 2em;
+    color: #ddd;
+    margin-bottom: 20px;
+    text-align: center; /* Ensures the title is centered */
+}
+
+/* Pricing grid and cards styling */
+.pricing-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Allows wrapping to fit on smaller screens */
+}
+
+.pricing-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    width: calc(50% - 20px); /* Adjust width to fit two cards side by side */
+    margin: 10px; /* Slightly reduce margin for tight fitting */
+    border: 1px solid #444;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.pricing-card h3, .pricing-card .price {
+    font-family: 'Old English Five', sans-serif;
+    font-size: 1.5em;
+}
+
+.pricing-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.pricing-card li {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* Button styles */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(69, 69, 69, 0.92);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(18, 18, 18);
+}
+
+.social-follow {
+    position: fixed;
+    left: 10px; /* Distance from the left side of the viewport */
+    font-size: 24px; /* Reduced icon size from 30px to 24px */
+    color: white; /* Icon color */
+    z-index: 1000; /* Ensures the icon is above other content */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+}
+
+.instagram-follow {
+    top: 45%; /* Adjusts vertical positioning */
+}
+
+.youtube-follow {
+    top: 50%; /* Centers the icon vertically */
+}
+
+.tiktok-follow {
+    top: 55%; /* Adjusts vertical positioning */
+}
+
+.social-follow:hover {
+    opacity: 0.8; /* Subtle hover effect */
+}
+
+.instagram-follow:hover {
+    color: #E1306C; /* Instagram pink */
+}
+
+.youtube-follow:hover {
+    color: #FF0000; /* YouTube red */
+}
+
+.tiktok-follow:hover {
+    color: #69C9D0; /* TikTok blue */
+}
+
+/* Program section styling with gradient */
+.program-section {
+    padding: 10px;
+    position: relative; /* Required for correct overlay */
+    background: linear-gradient(to top, #000, transparent); /* Adjust gradient as needed */
+}
+
+/* Overlay to fade in from hero image */
+.program-section::before {
+    content: "";
+    position: absolute;
+    top: -100px; /* Overlap with the hero section */
+    left: 0;
+    right: 0;
+    height: 100px; /* Height of the gradient effect */
+    background: linear-gradient(to bottom, transparent, #000); /* Creates a fading effect */
+    z-index: 2; /* Ensures it's above the hero */
+}
+
+/* Styling for FADI text */
+.fadi-text {
+    font-family: 'Old English Five', sans-serif;
+    font-size: 60px;
+    color: transparent;
+    position: relative; /* Changed from absolute to relative */
+    display: flex; /* Use flex to center content */
+    align-items: center; /* Align text vertically */
+    justify-content: center; /* Align text horizontally */
+    width: 100%; /* Ensure it spans the full width of its container */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.348);
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+/* Active or 'hover' effect for mobile and desktop */
+.fadi-text.active {
+    color: #00BFFF;
+    text-shadow: 0 0 20px #FFFF00, 0 0 40px #FFFF00;
+}
+
+.fadi-text::before {
+    content: 'Fadilift'; /* Adjust content positioning if needed */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust based on its own size */
+    color: transparent;
+    -webkit-text-stroke: 1px #ffffffac; /* Gold stroke for visibility */
+}
+
+.fadi-text:hover {
+    color: transparent;
+    text-shadow: 0 0 10px #000000, 0 0 20px #000000; /* Glowing effect on hover */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 1024px) { /* Adjust for tablets and below */
+    .stat {
+        width: 50%; /* Make stats take half-width on smaller desktops and tablets */
+    }
+
+    .pricing-card {
+        width: calc(50% - 20px); /* Adjust width to fit two cards side by side */
+    }
+}
+
+@media (max-width: 768px) { /* Adjustments for mobile devices */
+    .hero {
+        height: 60vh; /* Reduce hero height on mobile for better use of screen space */
+    }
+
+    .stat h2 {
+        font-size: 2em; /* Smaller font for stats on mobile */
+    }
+
+    .stat p {
+        font-size: 1em; /* Smaller paragraph text */
+    }
+
+    .pricing-card {
+        width: 100%; /* Full width for easier reading on smaller devices */
+        margin: 10px 0; /* Adjust margin for better spacing on mobile */
+    }
+}
+
+/* Cart Styles */
+.side-cart {
+    position: fixed;
+    top: 0;
+    right: -450px; /* Start off the screen */
+    width: 450px;
+    height: 100%;
+    background: #0b0b0b;
+    box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+    transition: right 0.3s ease-in-out; /* Smoother transition for sliding in and out */
+    overflow-y: auto; /* Allows scrolling inside the cart */
+    z-index: 1001; /* Ensures the cart is always on top */
+}
+
+/* Header of the Cart */
+.side-cart h2 {
+    background-color: #1313138a; 
+    color: #ffffff;
+    padding: 15px 20px;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* Form and Input Styling */
+.side-cart form {
+    padding: 20px;
+}
+
+.side-cart input[type="text"], .side-cart input[type="tel"], .side-cart input[type="email"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #1d1d1d;
+    border-radius: 5px;
+}
+
+/* Button Styling for Interactions */
+.side-cart button {
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Adjust the close button to appear on the left side */
+.side-cart button.close-btn {
+    position: absolute;
+    left: 0; /* Align to the left */
+    top: 10px; /* Position from the top */
+    width: auto; /* Auto width to shrink around the content */
+    padding: 10px 15px; /* Adjust padding for better visibility */
+    background-color: #131313; /* Dark background for the button */
+    color: white; /* White color for the text */
+    border-radius: 0 5px 5px 0; /* Rounded corners on the right side */
+    font-size: 1.5em; /* Larger font size for the arrow */
+}
+
+/* Add some hover effects for better user interaction */
+.side-cart button.close-btn:hover {
+    background-color: #555; /* Lighter background on hover */
+    color: #fff; /* Ensure the text color remains white */
+}
+
+.side-cart button#submit {
+    background-color: #6e6e6e8e; 
+    color: white;
+}
+
+/* Hover Effects for Buttons */
+.side-cart button:hover {
+    opacity: 0.9;
+}
+
+
+/* Responsive Design for Mobile Viewing */
+@media (max-width: 600px) {
+    .side-cart {
+        width: 100%; /* Full width on smaller screens */
+        right: -100%; /* Adjust starting position for full width */
+    }
+}
+
+/* Cart Totals Styling */
+.totals {
+    padding: 10px;
+    background-color: #0000005d; /* Light grey background for contrast */
+    color: #ffffff; /* Darker text for better readability */
+    border-top: 1px solid #161616; /* Separates totals from item list */
+    margin-top: 10px; /* Spacing from the cart items or the last element */
+}
+
+.totals div {
+    margin: 10px 0; /* Spacing between subtotal, tax, and total lines */
+    font-size: 16px; /* Sufficient size for readability */
+    letter-spacing: 0.5px; /* Spacing out letters slightly for a cleaner look */
+}
+
+/* Highlighting the Total amount for emphasis */
+#total {
+    font-size: 18px; /* Slightly larger font for total */
+    font-weight: bold; /* Bold font for emphasis */
+    color: #d35400; /* Orange color for highlighting the total cost */
+}
